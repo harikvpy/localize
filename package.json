@@ -2,12 +2,9 @@
   "name": "localize",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "main": "localize.js",
+  "author": "Hari Mahadevan <hari@smallpearl.com> (https://www.smallpearl.com)",
+  "license": "MIT",
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
     "flat": "^5.0.2",
