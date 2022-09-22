@@ -25,3 +25,7 @@ If the input JSON file has nested objects, these will be handled as well.
 
 # Dependencies
 * Node.js v14.x
+* NPM packages
+  * @vitalets/google-translate-api@^8.0.0
+  * flat@^5.0.2
+  * yargs@^17.5.1
