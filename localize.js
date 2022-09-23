@@ -3,7 +3,7 @@ const flatten = require('flat')
 const unflatten = require('flat').unflatten;
 const fs = require('fs');
 
-const MAX_TRANSLATE_LENGTH = 5000;
+const MAX_TRANSLATE_LENGTH = 4000;
 
 
 /**
@@ -48,19 +48,17 @@ async function translateObject(obj, to) {
   let keys = [];
   let values = []
   for (const key in obj) {
-    const value = obj[key]
-    if (typeof value === 'string') {
-      keys.push(key);
-      values.push(obj[key]);
-    }
+    keys.push(key);
+    values.push(obj[key]);
   }
 
-  let lastIndex = 0;
+  let lastKeyIndex = 0;
   let translatedObj = {};
-  while (lastIndex < keys.length-1) {
+  while (lastKeyIndex < keys.length-1) {
     let stringToTranslate = '';
-    for (let index = lastIndex; index < keys.length; index++) {
-      const value = values[index];
+    let keyIndex = lastKeyIndex;
+    for (; keyIndex < keys.length; keyIndex++) {
+      const value = values[keyIndex];
       if (stringToTranslate.length) {
         stringToTranslate += '\n';
       }
@@ -69,14 +67,16 @@ async function translateObject(obj, to) {
         break;
       } 
       stringToTranslate += value;
-      lastIndex = index;
     }
     // console.log(`Translating till ${lastIndex}, total strings: ${keys.length}`);
     const translatedString = await translate(stringToTranslate, {to});
     const parts = translatedString.text.split("\n");
     for (let index = 0; index < parts.length; index++) {
-      translatedObj[keys[index]] = parts[index];      
+      if (parts[index]) {
+        translatedObj[keys[lastKeyIndex+index]] = parts[index];
+      }
     }
+    lastKeyIndex = keyIndex;
     // console.log(`Translated obj: ${JSON.stringify(translatedObj, null, 2)}`);
   }
   return translatedObj;
